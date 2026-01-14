@@ -3,273 +3,278 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>公民人文主義：深度探究課程 (15講)</title>
+    <title>公民人文主義：深度探究 (修正版)</title>
     <style>
+        /* --- 基礎設定 --- */
         :root {
-            --primary-color: #6d2e2e; /* 深酒紅 */
-            --bg-color: #fdfbf7; /* 米白紙張色 */
-            --text-main: #2c3e50;
-            --accent-gold: #c5a059;
-            --slide-bg: #ffffff;
+            --primary-color: #800000; /* 深栗紅 */
+            --accent-color: #d4af37; /* 金色 */
+            --bg-color: #2c2c2c; /* 背景深灰 */
+            --slide-bg: #fdfbf7; /* 投影片米白 */
+            --text-color: #333;
         }
 
         body {
-            font-family: "Georgia", "Microsoft JhengHei", serif;
-            background-color: #333;
-            color: var(--text-main);
+            font-family: "Microsoft JhengHei", "PingFang TC", sans-serif;
             margin: 0;
             padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
             height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            overflow: hidden; /* 投影片模式下隱藏捲軸 */
         }
 
-        /* 投影片容器 */
-        .slide-container {
+        /* --- 投影片容器 --- */
+        #presentation-container {
             width: 90%;
-            max-width: 1000px;
-            aspect-ratio: 16/9;
+            max-width: 1024px;
+            height: 80vh; /* 佔據視窗高度的 80% */
             background-color: var(--slide-bg);
-            border-radius: 8px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             position: relative;
             overflow: hidden;
             display: flex;
             flex-direction: column;
         }
 
-        /* 投影片內容區域 */
+        /* --- 每一張投影片 --- */
         .slide {
             display: none; /* 預設隱藏 */
             padding: 40px 60px;
             height: 100%;
+            overflow-y: auto; /* 內容太多時允許內部捲動 */
             box-sizing: border-box;
-            animation: fadeIn 0.5s;
-            overflow-y: auto; /* 內容過多時可捲動 */
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
         }
 
         .slide.active {
             display: block;
+            opacity: 1;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* 排版樣式 */
+        /* --- 排版細節 --- */
         h1 {
             color: var(--primary-color);
-            font-size: 2.2rem;
-            margin-bottom: 10px;
-            border-bottom: 3px solid var(--accent-gold);
+            border-bottom: 3px solid var(--accent-color);
             padding-bottom: 10px;
-        }
-
-        h2 {
-            font-size: 1.5rem;
-            color: #555;
             margin-top: 0;
+            font-size: 2rem;
         }
 
-        .content-body {
-            font-size: 1.2rem;
-            line-height: 1.6;
+        h2 { font-size: 1.4rem; color: #555; }
+        
+        ul, ol { line-height: 1.8; font-size: 1.15rem; }
+        
+        li { margin-bottom: 10px; }
+
+        strong { color: #b71c1c; }
+
+        .highlight {
+            background-color: #fff3cd;
+            padding: 2px 6px;
+            border-radius: 4px;
         }
 
-        ul {
-            padding-left: 20px;
+        /* --- 深度解析區塊 (互動) --- */
+        .deep-dive-box {
+            margin-top: 25px;
+            border: 2px dashed var(--accent-color);
+            background-color: #fff;
+            border-radius: 8px;
+            overflow: hidden;
         }
 
-        li {
-            margin-bottom: 15px;
-        }
-
-        strong {
-            color: var(--primary-color);
-        }
-
-        /* 深度解析區塊 (折疊) */
-        .deep-dive {
-            margin-top: 20px;
-            padding: 15px;
-            background-color: #f4f4f4;
-            border-left: 5px solid var(--accent-gold);
-            font-size: 1rem;
-            color: #444;
-        }
-
-        .deep-dive h3 {
-            margin-top: 0;
-            font-size: 1.1rem;
+        .deep-dive-header {
+            background-color: #fdf5e6;
+            padding: 10px 15px;
+            cursor: pointer;
+            font-weight: bold;
             color: var(--primary-color);
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            cursor: pointer;
+            user-select: none;
         }
 
-        .deep-dive h3::after {
-            content: "▼";
-            font-size: 0.8em;
-            margin-left: 10px;
+        .deep-dive-header:hover {
+            background-color: #faeBD7;
         }
 
         .deep-dive-content {
             display: none; /* 預設隱藏 */
+            padding: 15px;
+            color: #444;
+            font-size: 1rem;
+            line-height: 1.6;
+            border-top: 1px solid #eee;
         }
 
-        /* 控制列 */
+        /* --- 底部控制列 --- */
         .controls {
-            width: 90%;
-            max-width: 1000px;
             margin-top: 15px;
             display: flex;
-            justify-content: space-between;
+            gap: 20px;
             align-items: center;
             color: white;
+            font-family: monospace;
+            font-size: 1.2rem;
         }
 
-        button {
+        button.nav-btn {
             background-color: var(--primary-color);
             color: white;
             border: none;
-            padding: 10px 20px;
+            padding: 10px 25px;
             border-radius: 5px;
             cursor: pointer;
             font-size: 1rem;
-            transition: background 0.3s;
+            transition: background 0.2s;
         }
 
-        button:hover {
-            background-color: #8b4040;
-        }
+        button.nav-btn:hover { background-color: #a52a2a; }
+        button.nav-btn:disabled { background-color: #555; cursor: not-allowed; }
 
-        button:disabled {
-            background-color: #555;
-            cursor: not-allowed;
+        /* --- 模式切換按鈕 (救命功能) --- */
+        .mode-switch {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
         }
-
-        .progress {
-            font-size: 1.2rem;
-            font-family: monospace;
-        }
-
-        /* 引言樣式 */
-        .quote {
-            font-style: italic;
-            color: #666;
-            border-left: 3px solid #ccc;
-            padding-left: 15px;
-            margin: 20px 0;
-        }
-
-        /* 關鍵字標籤 */
-        .keyword {
-            background-color: #e8ded2;
-            padding: 2px 6px;
+        .mode-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 1px solid white;
+            padding: 5px 10px;
+            cursor: pointer;
+            font-size: 0.9rem;
             border-radius: 4px;
-            font-weight: bold;
-            font-size: 0.9em;
         }
 
+        /* --- 列表模式 (List Mode) CSS --- */
+        body.list-mode {
+            height: auto;
+            overflow: auto;
+            padding: 20px;
+            display: block;
+        }
+
+        body.list-mode #presentation-container {
+            height: auto;
+            overflow: visible;
+            box-shadow: none;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        body.list-mode .slide {
+            display: block;
+            opacity: 1;
+            margin-bottom: 40px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        body.list-mode .controls { display: none; }
     </style>
 </head>
 <body>
 
-<div class="slide-container">
-
-    <div class="slide active" id="slide-1">
-        <div style="text-align: center; margin-top: 15%;">
-            <h1 style="border: none; font-size: 3rem;">公民人文主義<br><span style="font-size: 1.5rem; color:#666;">Civic Humanism</span></h1>
-            <p style="font-size: 1.5rem;">從沉思到行動：文藝復興的政治轉向</p>
-            <hr style="width: 50%; border-color: var(--accent-gold);">
-            <p>適用對象：高中歷史深究 / 選修公民</p>
-        </div>
+    <div class="mode-switch">
+        <button class="mode-btn" onclick="toggleMode()">切換為列表/網頁模式</button>
     </div>
 
-    <div class="slide" id="slide-2">
-        <h1>01. 什麼是公民人文主義？</h1>
-        <div class="content-body">
-            <p>這是一個歷史學概念，用來描述 14-15 世紀義大利（特別是佛羅倫斯）出現的一種思想轉向。</p>
+    <div id="presentation-container">
+
+        <div class="slide active">
+            <div style="text-align: center; margin-top: 10%;">
+                <h1 style="border:none; font-size: 3em;">公民人文主義</h1>
+                <h2 style="color: var(--accent-color);">Civic Humanism</h2>
+                <hr style="width: 50%; border-color: var(--accent-color); margin: 30px auto;">
+                <p style="font-size: 1.5rem;">高中歷史與公民素養深度探究</p>
+                <p>15 講互動課程</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <h1>01. 什麼是公民人文主義？</h1>
+            <p>這是一個歷史學概念，描述 14-15 世紀義大利（特別是佛羅倫斯）出現的一種思想轉向。</p>
             <ul>
-                <li><strong>核心定義：</strong>將古典學術（Humanism）與積極的政治生活（Civic Life）結合。</li>
+                <li><strong>核心定義：</strong>將古典學術 (Humanism) 與積極的政治生活 (Civic Life) 結合。</li>
                 <li><strong>關鍵區別：</strong>
                     <ul>
-                        <li><strong>一般人文主義：</strong>可能只關注文學、翻譯古籍、個人修養。</li>
-                        <li><strong>公民人文主義：</strong>認為學問必須用來<strong>服務國家</strong>，強調共和自由與公民參與。</li>
+                        <li>一般人文主義：可能只關注文學、翻譯、個人修養。</li>
+                        <li><strong>公民人文主義</strong>：認為學問必須用來<span class="highlight">服務國家</span>，強調共和自由。</li>
                     </ul>
                 </li>
             </ul>
-        </div>
-        <div class="deep-dive" onclick="toggleDeepDive(this)">
-            <h3>🎓 深度解析：術語的由來 (點擊展開)</h3>
-            <div class="deep-dive-content">
-                這個詞並非文藝復興人自稱，而是現代歷史學家 <strong>漢斯·巴倫 (Hans Baron)</strong> 在 1920 年代發明的（德文：Bürgerhumanismus）。他認為這是一種特殊的歷史現象，將「學術」從修道院帶入了「市政廳」。
+            <div class="deep-dive-box">
+                <div class="deep-dive-header" onclick="toggleContent(this)">🎓 深度解析：術語的由來 (點擊展開) <span>▼</span></div>
+                <div class="deep-dive-content">
+                    這個詞並非文藝復興人自稱，而是現代歷史學家 <strong>漢斯·巴倫 (Hans Baron)</strong> 在 1920 年代發明的。他認為這是一種特殊的歷史現象，將「學術」從修道院帶入了「市政廳」。
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="slide" id="slide-3">
-        <h1>02. 巴倫假說 (The Baron Thesis)</h1>
-        <div class="content-body">
-            <p>這是理解此主題最重要的學術框架。巴倫認為，公民人文主義的誕生並非自然演變，而是一次<strong>「突變」</strong>。</p>
+        <div class="slide">
+            <h1>02. 巴倫假說 (The Baron Thesis)</h1>
+            <p>巴倫認為，公民人文主義的誕生並非自然演變，而是一次歷史的「突變」。</p>
             <ul>
                 <li><strong>觀點：</strong>文藝復興早期的人文主義原本是「避世」的（像佩脫拉克那樣喜好隱居）。</li>
                 <li><strong>轉折：</strong>是在一場特定的<strong>政治危機</strong>後，人文主義才變得「入世」且「政治化」。</li>
             </ul>
-        </div>
-        <div class="deep-dive" onclick="toggleDeepDive(this)">
-            <h3>🎓 深度解析：學術界的爭論</h3>
-            <div class="deep-dive-content">
-                巴倫的《義大利文藝復興早期的危機》(1955) 是經典之作。雖然現代學者批評他過度美化了佛羅倫斯（忽略了它也是個帝國主義擴張者），但他的核心論點——<strong>「政治環境形塑了思想內容」</strong>——依然有力。
+            <div class="deep-dive-box">
+                <div class="deep-dive-header" onclick="toggleContent(this)">🎓 深度解析：學術爭論 <span>▼</span></div>
+                <div class="deep-dive-content">
+                    巴倫的《義大利文藝復興早期的危機》(1955) 是經典之作。雖然現代學者批評他過度美化了佛羅倫斯，但他的核心論點——「政治環境形塑了思想內容」——依然有力。
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="slide" id="slide-4">
-        <h1>03. 歷史現場：1402年的危機</h1>
-        <div class="content-body">
+        <div class="slide">
+            <h1>03. 歷史現場：1402年的危機</h1>
             <p>哪場危機改變了一切？</p>
             <ul>
-                <li><strong>威脅者：</strong>米蘭公爵 <span class="keyword">吉安·加萊亞佐·維斯孔蒂</span> (Gian Galeazzo Visconti)。他正試圖統一義大利北部，建立專制王國。</li>
-                <li><strong>受困者：</strong>佛羅倫斯。到 1402 年，佛羅倫斯已被包圍，盟友皆亡，孤立無援。</li>
+                <li><strong>威脅者：</strong>米蘭公爵維斯孔蒂 (Visconti)。他試圖統一義大利北部，建立專制王國。</li>
+                <li><strong>受困者：</strong>佛羅倫斯。到 1402 年，已被包圍，孤立無援。</li>
                 <li><strong>意義：</strong>這不僅是軍事對抗，更是<strong>「暴政 vs. 自由」</strong>的意識形態之戰。</li>
             </ul>
-        </div>
-        <div class="deep-dive" onclick="toggleDeepDive(this)">
-            <h3>🎓 深度解析：偶然的歷史？</h3>
-            <div class="deep-dive-content">
-                佛羅倫斯其實打不過米蘭。1402 年夏天，米蘭大軍準備發動總攻。但在 9 月，強大的維斯孔蒂公爵突然死於瘟疫。米蘭軍隊崩潰，佛羅倫斯奇蹟倖存。這次倖存被佛羅倫斯人解釋為「上帝對自由的眷顧」，極大增強了他們的共和自信。
+            <div class="deep-dive-box">
+                <div class="deep-dive-header" onclick="toggleContent(this)">🎓 深度解析：偶然的歷史 <span>▼</span></div>
+                <div class="deep-dive-content">
+                    1402 年夏天，米蘭大軍準備總攻。但在 9 月，公爵突然死於瘟疫。米蘭軍隊崩潰，佛羅倫斯奇蹟倖存。這次倖存被佛羅倫斯人解釋為「上帝對自由的眷顧」。
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="slide" id="slide-5">
-        <h1>04. 核心價值 I：積極生活 (Vita Activa)</h1>
-        <div class="content-body">
-            <p>中世紀基督教傳統推崇 <span class="keyword">沉思生活</span> (Vita Contemplativa)，認為修道士最接近真理。公民人文主義徹底翻轉了這個價值觀。</p>
+        <div class="slide">
+            <h1>04. 核心價值 I：積極生活 (Vita Activa)</h1>
+            <p>中世紀基督教傳統推崇「沉思生活」(Vita Contemplativa)，認為修道士最接近真理。公民人文主義翻轉了這個價值觀。</p>
             <ul>
-                <li><strong>入世精神：</strong>人是社會的動物（引用亞里斯多德）。</li>
-                <li><strong>家庭與財富：</strong>佩脫拉克輕視家庭與財富，但公民人文主義者（如阿爾貝蒂）認為，經營家庭、累積財富並回饋社會，是榮耀的公民責任。</li>
+                <li><strong>入世精神：</strong>人是社會的動物（亞里斯多德）。</li>
+                <li><strong>家庭與財富：</strong>經營家庭、累積財富並回饋社會，是榮耀的公民責任，而非罪惡。</li>
             </ul>
-        </div>
-        <div class="deep-dive" onclick="toggleDeepDive(this)">
-            <h3>🎓 深度解析：西賽羅 (Cicero) 的復興</h3>
-            <div class="deep-dive-content">
-                他們重新發現了羅馬政治家西賽羅的價值。西賽羅既是哲學家又是政治家，這成為了他們的新典範：一個有學問的人，必須運用智慧來治理國家，而非躲在書房裡。
+            <div class="deep-dive-box">
+                <div class="deep-dive-header" onclick="toggleContent(this)">🎓 深度解析：西賽羅 (Cicero) 的復興 <span>▼</span></div>
+                <div class="deep-dive-content">
+                    他們重新發現了羅馬政治家西賽羅的價值。西賽羅既是哲學家又是政治家，這成為了新典範：一個有學問的人，必須運用智慧來治理國家，而非躲在書房裡。
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="slide" id="slide-6">
-        <h1>05. 核心價值 II：共和自由 (Liberty)</h1>
-        <div class="content-body">
-            <p>這裡的「自由」與現代自由主義不同。</p>
+        <div class="slide">
+            <h1>05. 核心價值 II：共和自由 (Liberty)</h1>
+            <p>這裡的「自由」與現代意義不同。</p>
             <ul>
-                <li><strong>現代自由 (Liberalism)：</strong>免受干涉的自由（我想做什麼就做什麼）。</li>
-                <li><strong>共和自由 (Republicanism)：</strong><span class="keyword">不被支配的自由</span> (Non-domination)。
+                <li><strong>現代自由：</strong>免受干涉（我想做什麼就做什麼）。</li>
+                <li><strong>共和自由：</strong><span class="highlight">不被支配的自由 (Non-domination)</span>。
                     <ul>
                         <li>即使一個仁慈的國王對你很好，你仍是「奴隸」，因為你的命運掌握在他手中。</li>
                         <li>唯有活在法律之下、能夠自我治理的公民，才是自由人。</li>
@@ -277,159 +282,204 @@
                 </li>
             </ul>
         </div>
-        <div class="deep-dive" onclick="toggleDeepDive(this)">
-            <h3>🎓 深度解析：斯金納 (Quentin Skinner) 的詮釋</h3>
-            <div class="deep-dive-content">
-                劍橋學派史家 Skinner 指出，這種自由觀強調「依賴」就是奴役。如果不參與政治，你就把命運交給了別人，最終必然失去自由。因此，政治參與不是權利，而是<strong>義務</strong>。
-            </div>
-        </div>
-    </div>
 
-    <div class="slide" id="slide-7">
-        <h1>06. 關鍵人物：李奧納多·布魯尼</h1>
-        <div class="content-body">
-            <p><strong>Leonardo Bruni (1370–1444)</strong> 是公民人文主義的典範。</p>
+        <div class="slide">
+            <h1>06. 關鍵人物：李奧納多·布魯尼</h1>
+            <p><strong>Leonardo Bruni (1370–1444)</strong> 是公民人文主義的代表。</p>
             <ul>
-                <li><strong>身分：</strong>教皇秘書，後來成為佛羅倫斯共和國的總理 (Chancellor)。</li>
+                <li><strong>身分：</strong>佛羅倫斯共和國的總理 (Chancellor)。</li>
                 <li><strong>成就：</strong>
                     <ol>
                         <li>翻譯亞里斯多德《政治學》：將希臘民主觀念帶入拉丁世界。</li>
-                        <li>撰寫《佛羅倫斯人民史》：第一部現代意義的歷史書。</li>
+                        <li>撰寫《佛羅倫斯人民史》：強調人民的力量。</li>
                     </ol>
                 </li>
             </ul>
         </div>
-        <div class="deep-dive" onclick="toggleDeepDive(this)">
-            <h3>🎓 深度解析：知識分子的轉型</h3>
-            <div class="deep-dive-content">
-                布魯尼代表了一種新型知識分子——<strong>「官僚文人」</strong>。他的學術能力（優雅的拉丁文）直接轉化為國家的外交軟實力。他的公文寫得太好，以至於米蘭公爵曾說：「布魯尼的一支筆，抵得過一個軍團。」
-            </div>
-        </div>
-    </div>
 
-    <div class="slide" id="slide-8">
-        <h1>07. 歷史觀的重塑：兩個羅馬</h1>
-        <div class="content-body">
-            <p>中世紀人們崇拜羅馬帝國（凱撒、奧古斯都）。但布魯尼等人提出了一個革命性的歷史觀點：</p>
+        <div class="slide">
+            <h1>07. 歷史觀的重塑：兩個羅馬</h1>
+            <p>中世紀人們崇拜羅馬帝國（凱撒）。但布魯尼等人提出了革命性觀點：</p>
             <ul>
                 <li><strong>共和羅馬 vs. 帝國羅馬：</strong></li>
-                <li>他們認為羅馬的黃金時代是<strong>「共和時期」</strong>（西賽羅時代）。</li>
+                <li>羅馬的黃金時代是<strong>「共和時期」</strong>。</li>
                 <li>凱撒不是英雄，而是摧毀自由的<strong>「暴君」</strong>。</li>
                 <li>羅馬帝國建立之日，就是羅馬美德衰亡之時。</li>
             </ul>
         </div>
-        <div class="deep-dive" onclick="toggleDeepDive(this)">
-            <h3>🎓 深度解析：佛羅倫斯的起源神話</h3>
-            <div class="deep-dive-content">
-                為了證明佛羅倫斯天生愛好自由，布魯尼考證說佛羅倫斯是在「羅馬共和時期」建立的，因此繼承了共和的血脈；而非像傳統傳說那樣是由凱撒建立的。這是一種<strong>「歷史學作為政治武器」</strong>的經典案例。
-            </div>
-        </div>
-    </div>
 
-    <div class="slide" id="slide-9">
-        <h1>08. 語言的力量：修辭學 (Rhetoric)</h1>
-        <div class="content-body">
-            <p>為什麼人文主義者這麼重視修辭與演講？</p>
+        <div class="slide">
+            <h1>08. 語言的力量：修辭學 (Rhetoric)</h1>
+            <p>為什麼人文主義者重視演講？</p>
             <ul>
                 <li><strong>哲學 vs. 修辭：</strong>哲學尋求真理，但修辭能<strong>「驅動意志」</strong>。</li>
                 <li><strong>政治工具：</strong>在共和國，政策需要公民投票通過。你必須能說服大眾，才能推動公共利益。</li>
-                <li><strong>讚頌詞 (Laudatio)：</strong>布魯尼寫的《佛羅倫斯讚詞》，將城市描繪成完美的正義化身，激勵市民的愛國心。</li>
             </ul>
-        </div>
-        <div class="deep-dive" onclick="toggleDeepDive(this)">
-            <h3>🎓 深度解析：宣傳還是信念？</h3>
-            <div class="deep-dive-content">
-                歷史學家至今仍在爭論：布魯尼的讚頌詞究竟是真心的哲學信仰，還是單純的政治宣傳（Propaganda）？也許兩者皆是——在危機時刻，理念需要透過宣傳來凝聚人心。
+            <div class="deep-dive-box">
+                <div class="deep-dive-header" onclick="toggleContent(this)">🎓 深度解析：讚頌詞 (Laudatio) <span>▼</span></div>
+                <div class="deep-dive-content">
+                    布魯尼寫的《佛羅倫斯讚詞》，將城市描繪成完美的正義化身。這既是哲學信仰，也是戰爭時期的政治宣傳 (Propaganda)。
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="slide" id="slide-10">
-        <h1>09. 教育觀：Studia Humanitatis</h1>
-        <div class="content-body">
-            <p>公民人文主義推動了教育改革，核心是 <span class="keyword">人文學科 (Studia Humanitatis)</span>。</p>
+        <div class="slide">
+            <h1>09. 教育觀：Studia Humanitatis</h1>
+            <p>教育改革的核心是「人文學科」。</p>
             <ul>
-                <li><strong>目的：</strong>不是培養僧侶或專業技師，而是培養<strong>「自由人」</strong>和<strong>「好公民」</strong>。</li>
+                <li><strong>目的：</strong>不是培養僧侶或工匠，而是培養<strong>「自由人」</strong>。</li>
                 <li><strong>科目：</strong>歷史（學教訓）、道德哲學（學做人）、修辭（學表達）。</li>
-                <li><strong>信念：</strong>閱讀古典經典可以培養「美德 (Virtus)」，有美德的公民才能維持共和國的生存。</li>
+                <li><strong>信念：</strong>閱讀經典可以培養「美德 (Virtus)」，有美德的公民才能維持共和國。</li>
             </ul>
         </div>
-        <div class="deep-dive" onclick="toggleDeepDive(this)">
-            <h3>🎓 深度解析：美德政治 (Virtue Politics)</h3>
-            <div class="deep-dive-content">
-                現代學者 James Hankins 提出修正觀點：人文主義者最在乎的可能不是「民主制度」，而是「統治階層的品德」。無論是共和還是君主，只要統治者有美德、受過良好的人文教育，就是好政治。
-            </div>
-        </div>
-    </div>
 
-    <div class="slide" id="slide-11">
-        <h1>10. 後期發展：馬基維利的轉折</h1>
-        <div class="content-body">
-            <p>公民人文主義在 16 世紀初迎來了它的終結者與繼承者——<strong>馬基維利 (Machiavelli)</strong>。</p>
+        <div class="slide">
+            <h1>10. 馬基維利的轉折</h1>
+            <p>公民人文主義的繼承者與終結者：馬基維利。</p>
             <ul>
                 <li><strong>繼承：</strong>他繼承了「共和自由」和「公民軍隊」的理想。</li>
-                <li><strong>決裂：</strong>他拋棄了人文主義對「人性本善」和「古典美德」的幻想。</li>
-                <li><strong>現實主義：</strong>若要保衛自由，光靠西賽羅式的仁慈是不夠的，有時必須像野獸一樣兇猛。</li>
+                <li><strong>決裂：</strong>他拋棄了「人性本善」的幻想。</li>
+                <li><strong>現實主義：</strong>若要保衛自由，光靠仁慈是不夠的，有時必須像野獸一樣兇猛。</li>
             </ul>
         </div>
-        <div class="deep-dive" onclick="toggleDeepDive(this)">
-            <h3>🎓 深度解析：波考克 (J.G.A. Pocock) 與《馬基維利時刻》</h3>
-            <div class="deep-dive-content">
-                波考克認為，公民人文主義的最終型態就是馬基維利的共和主義。這條思想路線後來傳到了英國，再傳到美國，深深影響了美國建國國父們（如傑佛遜）的思想。
+
+        <div class="slide">
+            <h1>11. 批判視角 I：誰的自由？</h1>
+            <p>我們不能過度浪漫化這段歷史。</p>
+            <ul>
+                <li><strong>菁英主義：</strong>所謂的「積極公民」通常指有錢、有閒的男性貴族。勞工、婦女被排除在外。</li>
+                <li><strong>寡頭政治：</strong>佛羅倫斯雖然號稱共和，實際上常由幾個大家族把持。</li>
+            </ul>
+        </div>
+
+        <div class="slide">
+            <h1>12. 批判視角 II：對外壓迫</h1>
+            <p>佛羅倫斯自稱「自由捍衛者」，但對鄰居來說卻不是。</p>
+            <ul>
+                <li><strong>帝國主義：</strong>佛羅倫斯在此期間征服了比薩、阿雷佐等城市。</li>
+                <li><strong>雙重標準：</strong>內部講求自由，對外實行帝國統治。</li>
+                <li>這揭示了一個歷史弔詭：共和國有時比君主國更具侵略性。</li>
+            </ul>
+        </div>
+
+        <div class="slide">
+            <h1>13. 現代遺產</h1>
+            <p>為什麼今天要學這個？</p>
+            <ul>
+                <li><strong>社群主義：</strong>對抗現代過度的個人主義。提醒我們人是社群的一部分。</li>
+                <li><strong>公民參與：</strong>民主不只是投票，而是持續的關注。</li>
+                <li><strong>大西洋共和傳統：</strong>這套思想後來影響了美國建國國父（如傑佛遜）。</li>
+            </ul>
+        </div>
+
+        <div class="slide">
+            <h1>14. 總結與討論</h1>
+            <p><strong>回顧重點：</strong></p>
+            <ol>
+                <li>危機激發了政治意識 (1402)。</li>
+                <li>積極生活優於沉思生活。</li>
+                <li>自由意味著參與和不被支配。</li>
+            </ol>
+            <div class="deep-dive-box">
+                <div class="deep-dive-header" onclick="toggleContent(this)">🤔 思考題 <span>▼</span></div>
+                <div class="deep-dive-content">
+                    在當代社會，我們是否過度強調了「消極自由」（不被政府管），而遺忘了「積極自由」（參與管理眾人之事）？
+                </div>
             </div>
         </div>
+
+        <div class="slide">
+            <h1>15. 延伸閱讀</h1>
+            <ul>
+                <li><strong>Hans Baron:</strong> The Crisis of the Early Italian Renaissance.</li>
+                <li><strong>J.G.A. Pocock:</strong> The Machiavellian Moment.</li>
+                <li><strong>Quentin Skinner:</strong> The Foundations of Modern Political Thought.</li>
+            </ul>
+        </div>
+
     </div>
 
-    <div class="slide" id="slide-12">
-        <h1>11. 批判視角 I：誰的自由？</h1>
-        <div class="content-body">
-            <p>我們不能過度浪漫化公民人文主義。</p>
-            <ul>
-                <li><strong>菁英主義：</strong>所謂的「積極公民」通常指有錢、有閒的男性貴族或富商。勞工、婦女被排除在外。</li>
-                <li><strong>寡頭政治：</strong>佛羅倫斯雖然號稱共和，實際上常由幾個大家族（如美第奇家族之前的奧利加基）把持。</li>
-                <li>布魯尼的「自由」口號，有時被視為掩蓋階級不平等的意識形態面具。</li>
-            </ul>
-        </div>
-        <div class="deep-dive" onclick="toggleDeepDive(this)">
-            <h3>🎓 深度解析：意識形態批判</h3>
-            <div class="deep-dive-content">
-                社會史學家指出，公民人文主義強調「和諧」與「愛國」，有時是為了壓制底層人民（Ciompi）的抗議，要求他們為了「國家利益」犧牲個人訴求。
-            </div>
-        </div>
+    <div class="controls">
+        <button class="nav-btn" id="prevBtn" onclick="plusSlides(-1)">❮ 上一頁</button>
+        <span id="page-indicator">1 / 16</span>
+        <button class="nav-btn" id="nextBtn" onclick="plusSlides(1)">下一頁 ❯</button>
     </div>
 
-    <div class="slide" id="slide-13">
-        <h1>12. 批判視角 II：對外的壓迫</h1>
-        <div class="content-body">
-            <p>佛羅倫斯自稱「自由的捍衛者」，但對鄰居來說卻不是這樣。</p>
-            <ul>
-                <li><strong>對外擴張：</strong>佛羅倫斯在此期間征服了比薩 (Pisa)、阿雷佐 (Arezzo) 等周邊城市。</li>
-                <li><strong>雙重標準：</strong>他們在內部講求共和自由，對外卻實行帝國統治。</li>
-                <li><strong>辯護理由：</strong>布魯尼辯稱，被佛羅倫斯統治是這些小城的榮幸，因為他們被納入了更高等的文明秩序中。</li>
-            </ul>
-        </div>
-        <div class="deep-dive" onclick="toggleDeepDive(this)">
-            <h3>🎓 深度解析：自由帝國主義</h3>
-            <div class="deep-dive-content">
-                這揭示了一個歷史弔詭：共和國往往比君主國更具侵略性。因為公民為了榮耀和利益，會積極支持對外戰爭。這與後來 19 世紀西方國家的「殖民文明論」有相似之處。
-            </div>
-        </div>
-    </div>
+    <script>
+        // --- JavaScript 邏輯 ---
+        
+        let slideIndex = 1;
+        const slides = document.getElementsByClassName("slide");
+        const totalSlides = slides.length;
+        const pageIndicator = document.getElementById("page-indicator");
+        const prevBtn = document.getElementById("prevBtn");
+        const nextBtn = document.getElementById("nextBtn");
 
-    <div class="slide" id="slide-14">
-        <h1>13. 公民人文主義的現代遺產</h1>
-        <div class="content-body">
-            <p>為什麼 600 年後的今天我們還要學這個？</p>
-            <ul>
-                <li><strong>社群主義 (Communitarianism)：</strong>對抗現代過度的個人主義。提醒我們人是社群的一部分。</li>
-                <li><strong>公民參與：</strong>民主不只是投票那天的事，而是持續的關注與參與。</li>
-                <li><strong>教育的目的：</strong>教育不應只為了就業，更應為了培養能思考公共議題的公民。</li>
-            </ul>
-        </div>
-        <div class="deep-dive" onclick="toggleDeepDive(this)">
-            <h3>🎓 深度解析：大西洋共和傳統</h3>
-            <div class="deep-dive-content">
-                從佛羅倫斯到美國獨立宣言，這條「大西洋共和傳統」形塑了現代西方的政治語言。當我們談論「制衡」、「反貪腐」、「公民美德」時，我們都在使用公民人文主義留下的詞彙。
-            </div>
-        </div>
-    </div>
+        // 初始化顯示
+        showSlides(slideIndex);
+
+        // 切換投影片函數
+        function plusSlides(n) {
+            showSlides(slideIndex += n);
+        }
+
+        // 核心顯示邏輯
+        function showSlides(n) {
+            if (n > totalSlides) { slideIndex = totalSlides }
+            if (n < 1) { slideIndex = 1 }
+
+            // 隱藏所有 Slide
+            for (let i = 0; i < slides.length; i++) {
+                slides[i].classList.remove("active");
+            }
+
+            // 顯示當前 Slide
+            slides[slideIndex - 1].classList.add("active");
+
+            // 更新頁碼文字
+            pageIndicator.innerText = slideIndex + " / " + totalSlides;
+
+            // 更新按鈕狀態 (第一頁不能按上一頁，最後一頁不能按下一頁)
+            prevBtn.disabled = (slideIndex === 1);
+            nextBtn.disabled = (slideIndex === totalSlides);
+        }
+
+        // 鍵盤控制 (左右方向鍵)
+        document.addEventListener('keydown', function(event) {
+            if (event.key === "ArrowRight") {
+                plusSlides(1);
+            } else if (event.key === "ArrowLeft") {
+                plusSlides(-1);
+            }
+        });
+
+        // 深度解析展開/收合功能
+        function toggleContent(header) {
+            const content = header.nextElementSibling;
+            if (content.style.display === "block") {
+                content.style.display = "none";
+                header.querySelector("span").innerText = "▼";
+            } else {
+                content.style.display = "block";
+                header.querySelector("span").innerText = "▲";
+                // 平滑滾動確保內容可見
+                content.scrollIntoView({ behavior: "smooth", block: "nearest" });
+            }
+        }
+
+        // 切換模式 (投影片 <-> 列表)
+        function toggleMode() {
+            document.body.classList.toggle("list-mode");
+            const btn = document.querySelector(".mode-btn");
+            if (document.body.classList.contains("list-mode")) {
+                btn.innerText = "切換回投影片模式";
+                // 列表模式下顯示所有卡片，隱藏控制項
+            } else {
+                btn.innerText = "切換為列表/網頁模式";
+                // 切換回投影片時，重置到第一頁或當前頁
+                showSlides(slideIndex);
+            }
+        }
+    </script>
+</body>
+</html>
