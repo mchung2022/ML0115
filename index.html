@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>高中歷史/公民互動教室：公民人文主義 (Civic Humanism)</title>
+    <title>高中歷史/公民互動教室：公民人文主義 (進階探究版)</title>
     <style>
         :root {
             --primary-color: #8B4513; /* 佛羅倫斯紅磚色 */
             --secondary-color: #F5F5DC; /* 羊皮紙色 */
             --accent-color: #2F4F4F; /* 深岩灰 */
+            --highlight-color: #DAA520; /* 金色 */
             --text-color: #333;
             --light-bg: #fff;
         }
@@ -23,16 +24,17 @@
         }
 
         header {
-            background-color: var(--primary-color);
+            background: linear-gradient(135deg, var(--primary-color), #5e2f0d);
             color: white;
             text-align: center;
-            padding: 2rem 1rem;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 3rem 1rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
 
         header h1 {
             margin: 0;
             font-size: 2.5rem;
+            letter-spacing: 2px;
         }
 
         header p {
@@ -43,33 +45,58 @@
 
         .container {
             max-width: 900px;
-            margin: 2rem auto;
+            margin: -30px auto 2rem auto; /* 讓內容稍微覆蓋 header */
             padding: 0 1rem;
+            position: relative;
+            z-index: 10;
         }
 
         .card {
             background: var(--light-bg);
-            border-radius: 10px;
-            padding: 2rem;
+            border-radius: 12px;
+            padding: 2.5rem;
             margin-bottom: 2rem;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            border-left: 5px solid var(--accent-color);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            border-left: 6px solid var(--accent-color);
             transition: transform 0.2s;
         }
 
         .card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-3px);
         }
+
+        /* 標籤樣式 */
+        .tag {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 1rem;
+        }
+        .tag-knowledge { background-color: var(--accent-color); }
+        .tag-inquiry { background-color: #c0392b; }
+        .tag-literacy { background-color: #2980b9; }
 
         h2 {
             color: var(--primary-color);
-            border-bottom: 2px solid var(--secondary-color);
+            border-bottom: 2px solid #eee;
             padding-bottom: 0.5rem;
+            margin-top: 0;
         }
 
         h3 {
             color: var(--accent-color);
             margin-top: 1.5rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        h3::before {
+            content: "✦";
+            margin-right: 8px;
+            color: var(--highlight-color);
         }
 
         .highlight {
@@ -77,31 +104,64 @@
             padding: 2px 5px;
             border-radius: 4px;
             font-weight: bold;
+            box-shadow: 1px 1px 0px rgba(0,0,0,0.1);
         }
 
-        /* 互動式按鈕與隱藏內容 */
+        /* 互動按鈕與區域 */
         .toggle-btn {
             background-color: var(--accent-color);
             color: white;
             border: none;
-            padding: 10px 20px;
-            border-radius: 20px;
+            padding: 10px 25px;
+            border-radius: 25px;
             cursor: pointer;
             font-size: 1rem;
-            margin-top: 10px;
-            transition: background 0.3s;
+            margin-top: 15px;
+            transition: all 0.3s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
 
         .toggle-btn:hover {
             background-color: #1a2f2f;
+            transform: scale(1.05);
         }
 
         .hidden-content {
             display: none;
-            margin-top: 15px;
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #f4f8f9;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        /* 探究活動專區樣式 */
+        .activity-box {
+            background-color: #fff8e1;
+            border: 2px dashed var(--highlight-color);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 100px;
+            padding: 10px;
+            margin-top: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-family: inherit;
+            resize: vertical;
+        }
+
+        .scenario-role {
+            background: #333;
+            color: #fff;
             padding: 15px;
-            background-color: #f9f9f9;
-            border-left: 3px solid var(--primary-color);
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-style: italic;
         }
 
         /* 測驗區樣式 */
@@ -113,47 +173,41 @@
         .options label {
             display: block;
             margin: 10px 0;
-            padding: 10px;
+            padding: 12px;
             background: white;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
             border: 1px solid #ddd;
+            transition: background 0.2s;
         }
 
         .options label:hover {
-            background-color: #f0f0f0;
+            background-color: #e3f2fd;
         }
 
         .feedback {
-            margin-top: 10px;
+            margin-top: 15px;
             font-weight: bold;
-            padding: 10px;
-            border-radius: 5px;
+            padding: 15px;
+            border-radius: 8px;
             display: none;
         }
 
-        .correct {
-            background-color: #d4edda;
-            color: #155724;
-        }
-
-        .incorrect {
-            background-color: #f8d7da;
-            color: #721c24;
-        }
+        .correct { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .incorrect { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
 
         footer {
             text-align: center;
-            padding: 2rem;
+            padding: 3rem;
             background-color: #333;
-            color: white;
+            color: #bbb;
             font-size: 0.9rem;
+            margin-top: 3rem;
         }
 
         @media (max-width: 600px) {
-            header h1 {
-                font-size: 1.8rem;
-            }
+            header h1 { font-size: 1.8rem; }
+            .card { padding: 1.5rem; }
         }
     </style>
 </head>
@@ -162,93 +216,114 @@
 <header>
     <h1>公民人文主義</h1>
     <p>Civic Humanism</p>
-    <p style="font-size: 1rem;">文藝復興時期的政治與思想革命</p>
+    <p style="font-size: 1rem; margin-top:15px; background:rgba(255,255,255,0.2); display:inline-block; padding:5px 15px; border-radius:20px;">高中歷史/公民跨科探究教案</p>
 </header>
 
 <div class="container">
 
     <section class="card">
-        <h2>1. 定義與核心概念</h2>
-        <p>「公民人文主義」這個詞並不是文藝復興時期的人自己發明的，而是後來歷史學家（特別是 <strong>漢斯·巴倫 Hans Baron</strong>）用來描述一種特定思想流派的術語。</p>
-        <p>它主要出現在 14-15 世紀的義大利，特別是 <span class="highlight">佛羅倫斯 (Florence)</span>。</p>
+        <span class="tag tag-knowledge">知識建構</span>
+        <h2>1. 核心概念與定義</h2>
+        <p>「公民人文主義」是歷史學家（如漢斯·巴倫 Hans Baron）用來描述 14-15 世紀義大利佛羅倫斯一種特殊思想的術語。</p>
         
-        <h3>核心主張：積極生活 vs. 沉思生活</h3>
-        <p>在中世紀，人們認為隱居修道、沉思冥想（Vita Contemplativa）是最高尚的生活。但公民人文主義者提出了不同的看法：</p>
-        <button class="toggle-btn" onclick="toggleContent('content1')">點擊查看核心差異</button>
-        <div id="content1" class="hidden-content">
-            <ul>
-                <li><strong>積極生活 (Vita Activa)</strong>：他們認為學者不應只待在書房，而應<strong>積極參與公共事務與政治</strong>。</li>
-                <li><strong>公民美德</strong>：個人的自我實現必須透過參與社群（共和國）的事務來完成。</li>
-                <li><strong>自由 (Liberty)</strong>：這裡的自由不是指「想做什麼就做什麼」（現代自由主義），而是指<strong>不受暴君統治、能夠自我治理</strong>（共和主義）。</li>
-            </ul>
+        <h3>觀念翻轉：從「出世」到「入世」</h3>
+        <p>中世紀主流價值認為，修道院中的沉思生活（Vita Contemplativa）最接近上帝。但公民人文主義者主張：</p>
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <div style="flex: 1; min-width: 250px; background: #f9f9f9; padding: 15px; border-radius: 8px;">
+                <strong>💡 積極生活 (Vita Activa)</strong><br>
+                學者不能只躲在象牙塔，必須走入廣場，參與政治與公共事務。
+            </div>
+            <div style="flex: 1; min-width: 250px; background: #f9f9f9; padding: 15px; border-radius: 8px;">
+                <strong>🏛️ 共和自由 (Liberty)</strong><br>
+                真正的自由是能夠「自我治理」，不受外部皇帝或內部暴君的奴役。
+            </div>
         </div>
     </section>
 
     <section class="card">
-        <h2>2. 歷史背景：巴倫假說 (The Baron Thesis)</h2>
-        <p>為什麼這種思想會突然在佛羅倫斯興起？歷史學家漢斯·巴倫提出了一個著名的解釋。</p>
-        <p>他認為這是一場<strong>「危機」</strong>帶來的轉機。</p>
+        <span class="tag tag-knowledge">歷史脈絡</span>
+        <h2>2. 歷史的轉折點：1402年的危機</h2>
+        <p>根據「巴倫假說 (The Baron Thesis)」，這種思想的誕生源於一場生死存亡的危機。</p>
         
-        <div style="background: #fff; padding: 15px; border-radius: 8px; border: 1px dashed #aaa; margin: 15px 0;">
-            <strong>危機時刻 (約 1400-1402年)：</strong><br>
-            強大的米蘭公爵（威權統治）試圖併吞佛羅倫斯。
-        </div>
-
-        <h3>危機的影響</h3>
-        <p>面對強敵，佛羅倫斯的知識分子必須為自己的生存尋找理由。他們開始強調佛羅倫斯是<strong>「自由的捍衛者」</strong>，對抗米蘭的「暴政」。這激發了強烈的愛國情操與共和意識。</p>
+        <p><strong>背景：</strong>1400年代初，強大的米蘭公爵（威權統治代表）包圍了佛羅倫斯。佛羅倫斯孤立無援，幾乎亡國。</p>
+        <p><strong>影響：</strong>在這場危機中，佛羅倫斯的知識分子（如薩盧塔蒂、布魯尼）開始用筆桿子戰鬥，他們將佛羅倫斯描繪成<span class="highlight">「新羅馬」</span>，是義大利自由的最後堡壘。這種愛國情操催生了公民人文主義。</p>
     </section>
 
-    <section class="card">
-        <h2>3. 關鍵人物</h2>
-        <p>這些「公民人文主義者」通常身兼二職：既是滿腹經綸的學者，也是政府的高級官員。</p>
+    <section class="card" style="border-left-color: #2980b9;">
+        <span class="tag tag-literacy">素養提問</span>
+        <h2>3. 深度思考：連結現代生活</h2>
+        <p>歷史不只是過去的事，讓我們試著用公民人文主義的視角來檢視現代社會。</p>
 
-        <h3>李奧納多·布魯尼 (Leonardo Bruni, 1370-1444)</h3>
-        <p>他是公民人文主義的代表人物，曾任佛羅倫斯共和國的總理（Chancellor）。</p>
-        <button class="toggle-btn" onclick="toggleContent('content2')">看看他的貢獻</button>
-        <div id="content2" class="hidden-content">
-            <ul>
-                <li><strong>翻譯亞里斯多德</strong>：他將亞里斯多德的《政治學》重新翻譯成拉丁文，強調人是「政治的動物」。</li>
-                <li><strong>《佛羅倫斯人民史》</strong>：他撰寫歷史書，將佛羅倫斯的自由精神追溯到古羅馬共和時期，認為羅馬帝國的皇帝反而扼殺了自由。</li>
-                <li><strong>讚頌詞 (Laudatio)</strong>：他大力讚揚佛羅倫斯的政治制度，認為它是正義與自由的化身。</li>
-            </ul>
+        <h3>議題一：菁英的責任</h3>
+        <p>公民人文主義者認為，受過良好教育的人（掌握知識的人），有義務運用他們的知識來服務國家，而不僅僅是為了個人興趣或賺錢。</p>
+        
+        <div class="activity-box">
+            <strong>🤔 你的看法：</strong>
+            <p>在現代社會，你認為一位優秀的科學家或工程師，是否有義務優先考慮「公共利益」（例如解決氣候變遷），還是他有權利只追求「個人財富」或「純粹的學術興趣」？</p>
+            <textarea placeholder="寫下你的想法...（這裡可以當作你的思考草稿區）"></textarea>
+            <button class="toggle-btn" onclick="toggleContent('ans-reflection')">看看引導思考方向</button>
+            <div id="ans-reflection" class="hidden-content">
+                <strong>引導思考：</strong>
+                <ul>
+                    <li><strong>支持公共利益：</strong> 就像布魯尼認為的，人的價值在於社群。如果社會崩潰（如環境浩劫），個人的財富也沒有意義。教育資源來自社會，回饋社會是合理的。</li>
+                    <li><strong>支持個人權利：</strong> 現代自由主義更強調個人選擇權。強迫科學家服務政治可能會扼殺創新，或者導致極權主義（為了國家犧牲個人）。</li>
+                    <li><strong>折衷：</strong> 也許可以透過制度設計（如獎勵機制），讓追求個人成就的同時也能造福社會。</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="card" style="border-left-color: #c0392b;">
+        <span class="tag tag-inquiry">情境探究</span>
+        <h2>4. 歷史實驗室：1402年的演說家</h2>
+        
+        <div class="scenario-role">
+            📍 <strong>情境設定：</strong> 現在是 1402 年，米蘭的大軍就在城外。佛羅倫斯城內人心惶惶，有一派人主張投降以保全性命，另一派堅持抵抗。
+            <br><br>
+            🎭 <strong>你的角色：</strong> 你是李奧納多·布魯尼 (Leonardo Bruni) 的學生，一位年輕的人文主義者。你受邀在市政會議上發言。
+        </div>
+
+        <h3>任務：撰寫一段短講</h3>
+        <p>請運用「公民人文主義」的核心價值（自由、羅馬共和精神、反對暴政），寫一段話來說服市民不要投降。</p>
+        <textarea placeholder="市民們！我們是羅馬的繼承人...（請繼續撰寫）" style="height: 150px;"></textarea>
+
+        <button class="toggle-btn" onclick="toggleContent('speech-ref')">查看參考範例</button>
+        <div id="speech-ref" class="hidden-content">
+            <strong>參考範例（模擬布魯尼風格）：</strong>
+            <p>「佛羅倫斯的公民們！看看我們腳下的土地，這裡流淌著古羅馬共和的血液。米蘭人許諾給我們和平，但那是奴隸的和平！在此刻，放棄自由就是放棄作為人的尊嚴。我們的財富可以再造，但失去的自由將永遠無法挽回。為了我們的子孫能挺起胸膛生活，我們必須戰鬥，用積極的行動來捍衛這座自由之城！」</p>
+            <p><em>解析：這段話運用了「歷史傳承」（羅馬）、「自由 vs. 奴役」的對比，這正是公民人文主義常用的修辭策略。</em></p>
         </div>
     </section>
 
     <section class="card quiz-section">
-        <h2>4. 隨堂小測驗</h2>
-        <p>測試一下你對公民人文主義的理解吧！</p>
-
+        <h2>5. 隨堂檢測</h2>
+        
         <div class="quiz-item">
-            <h3>Q1. 公民人文主義者最推崇哪一種生活方式？</h3>
+            <h3>Q1. 關於「公民人文主義」，下列敘述何者最符合其核心精神？</h3>
             <div class="options">
-                <label><input type="radio" name="q1" value="wrong" onclick="checkAnswer('q1', false, 'feedback1')"> 隱居山林，專注於宗教冥想。</label>
-                <label><input type="radio" name="q1" value="correct" onclick="checkAnswer('q1', true, 'feedback1')"> 積極參與公共事務與政治活動 (Vita Activa)。</label>
-                <label><input type="radio" name="q1" value="wrong" onclick="checkAnswer('q1', false, 'feedback1')"> 追求個人的財富累積，不問世事。</label>
+                <label><input type="radio" name="q1" onclick="checkAnswer('q1', false, 'feedback1')"> 知識分子應遠離政治骯髒的場域，保持學術純淨。</label>
+                <label><input type="radio" name="q1" onclick="checkAnswer('q1', true, 'feedback1')"> 個人的自我實現，必須透過參與城邦的公共事務來完成。</label>
+                <label><input type="radio" name="q1" onclick="checkAnswer('q1', false, 'feedback1')"> 君主專制是最理想的政體，因為能帶來穩定。</label>
             </div>
             <div id="feedback1" class="feedback"></div>
         </div>
 
         <div class="quiz-item">
-            <h3>Q2. 根據「巴倫假說」，是什麼歷史事件激發了佛羅倫斯的公民人文主義？</h3>
+            <h3>Q2. 根據漢斯·巴倫的觀點，為什麼公民人文主義特別強調「歷史」的重要性？</h3>
             <div class="options">
-                <label><input type="radio" name="q2" value="wrong" onclick="checkAnswer('q2', false, 'feedback2')"> 黑死病的爆發。</label>
-                <label><input type="radio" name="q2" value="wrong" onclick="checkAnswer('q2', false, 'feedback2')"> 發現新大陸。</label>
-                <label><input type="radio" name="q2" value="correct" onclick="checkAnswer('q2', true, 'feedback2')"> 米蘭公國對佛羅倫斯的軍事威脅。</label>
+                <label><input type="radio" name="q2" onclick="checkAnswer('q2', true, 'feedback2')"> 為了證明佛羅倫斯繼承了古羅馬共和的自由精神，以對抗米蘭的威權。</label>
+                <label><input type="radio" name="q2" onclick="checkAnswer('q2', false, 'feedback2')"> 為了考證聖經的原文，進行宗教改革。</label>
+                <label><input type="radio" name="q2" onclick="checkAnswer('q2', false, 'feedback2')"> 為了尋找古代的建築圖紙來蓋大教堂。</label>
             </div>
             <div id="feedback2" class="feedback"></div>
         </div>
     </section>
 
-    <section class="card">
-        <h2>5. 總結與反思</h2>
-        <p>公民人文主義留給現代社會最重要的遺產是：<strong>教育不僅僅是為了個人的知識增長，更是為了培養能夠服務社會的優秀公民。</strong></p>
-        <p>想一想：在現代民主社會中，我們是否也需要具備某種「公民美德」？</p>
-    </section>
-
 </div>
 
 <footer>
-    <p>資料來源：Stanford Encyclopedia of Philosophy (Civic Humanism) | 整理製作：AI 助教</p>
+    <p>設計給高中生的互動教材 | 資料來源：Stanford Encyclopedia of Philosophy</p>
+    <p>適用單元：世界文化史、公民與社會（政治參與）、探究與實作</p>
 </footer>
 
 <script>
@@ -259,6 +334,8 @@
             content.style.display = "none";
         } else {
             content.style.display = "block";
+            // 自動滾動到展開的內容
+            content.scrollIntoView({behavior: "smooth", block: "center"});
         }
     }
 
@@ -268,10 +345,10 @@
         feedback.style.display = "block";
         
         if (isCorrect) {
-            feedback.innerHTML = "✅ 答對了！這正是公民人文主義的核心精神。";
+            feedback.innerHTML = "✅ <strong>答對了！</strong> <br>公民人文主義強調「知行合一」，並透過歷史來建立政治認同。";
             feedback.className = "feedback correct";
         } else {
-            feedback.innerHTML = "❌ 再想一下喔！請回顧上面的內容。";
+            feedback.innerHTML = "❌ <strong>再試一次！</strong> <br>提示：回想一下他們對於「積極生活」和「自由」的看法。";
             feedback.className = "feedback incorrect";
         }
     }
