@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高中歷史/公民互動教室：公民人文主義 (Civic Humanism)</title>
+    <style>
+        :root {
+            --primary-color: #8B4513; /* 佛羅倫斯紅磚色 */
+            --secondary-color: #F5F5DC; /* 羊皮紙色 */
+            --accent-color: #2F4F4F; /* 深岩灰 */
+            --text-color: #333;
+            --light-bg: #fff;
+        }
+
+        body {
+            font-family: "Microsoft JhengHei", "PingFang TC", sans-serif;
+            line-height: 1.8;
+            color: var(--text-color);
+            background-color: var(--secondary-color);
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 2rem 1rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+        }
+
+        header p {
+            margin-top: 10px;
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .card {
+            background: var(--light-bg);
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border-left: 5px solid var(--accent-color);
+            transition: transform 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        h2 {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 0.5rem;
+        }
+
+        h3 {
+            color: var(--accent-color);
+            margin-top: 1.5rem;
+        }
+
+        .highlight {
+            background-color: #fffacd;
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        /* 互動式按鈕與隱藏內容 */
+        .toggle-btn {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-top: 10px;
+            transition: background 0.3s;
+        }
+
+        .toggle-btn:hover {
+            background-color: #1a2f2f;
+        }
+
+        .hidden-content {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-left: 3px solid var(--primary-color);
+        }
+
+        /* 測驗區樣式 */
+        .quiz-section {
+            background-color: #e8f4f8;
+            border-left-color: #2196F3;
+        }
+
+        .options label {
+            display: block;
+            margin: 10px 0;
+            padding: 10px;
+            background: white;
+            border-radius: 5px;
+            cursor: pointer;
+            border: 1px solid #ddd;
+        }
+
+        .options label:hover {
+            background-color: #f0f0f0;
+        }
+
+        .feedback {
+            margin-top: 10px;
+            font-weight: bold;
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .correct {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .incorrect {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            background-color: #333;
+            color: white;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 600px) {
+            header h1 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>公民人文主義</h1>
+    <p>Civic Humanism</p>
+    <p style="font-size: 1rem;">文藝復興時期的政治與思想革命</p>
+</header>
+
+<div class="container">
+
+    <section class="card">
+        <h2>1. 定義與核心概念</h2>
+        <p>「公民人文主義」這個詞並不是文藝復興時期的人自己發明的，而是後來歷史學家（特別是 <strong>漢斯·巴倫 Hans Baron</strong>）用來描述一種特定思想流派的術語。</p>
+        <p>它主要出現在 14-15 世紀的義大利，特別是 <span class="highlight">佛羅倫斯 (Florence)</span>。</p>
+        
+        <h3>核心主張：積極生活 vs. 沉思生活</h3>
+        <p>在中世紀，人們認為隱居修道、沉思冥想（Vita Contemplativa）是最高尚的生活。但公民人文主義者提出了不同的看法：</p>
+        <button class="toggle-btn" onclick="toggleContent('content1')">點擊查看核心差異</button>
+        <div id="content1" class="hidden-content">
+            <ul>
+                <li><strong>積極生活 (Vita Activa)</strong>：他們認為學者不應只待在書房，而應<strong>積極參與公共事務與政治</strong>。</li>
+                <li><strong>公民美德</strong>：個人的自我實現必須透過參與社群（共和國）的事務來完成。</li>
+                <li><strong>自由 (Liberty)</strong>：這裡的自由不是指「想做什麼就做什麼」（現代自由主義），而是指<strong>不受暴君統治、能夠自我治理</strong>（共和主義）。</li>
+            </ul>
+        </div>
+    </section>
+
+    <section class="card">
+        <h2>2. 歷史背景：巴倫假說 (The Baron Thesis)</h2>
+        <p>為什麼這種思想會突然在佛羅倫斯興起？歷史學家漢斯·巴倫提出了一個著名的解釋。</p>
+        <p>他認為這是一場<strong>「危機」</strong>帶來的轉機。</p>
+        
+        <div style="background: #fff; padding: 15px; border-radius: 8px; border: 1px dashed #aaa; margin: 15px 0;">
+            <strong>危機時刻 (約 1400-1402年)：</strong><br>
+            強大的米蘭公爵（威權統治）試圖併吞佛羅倫斯。
+        </div>
+
+        <h3>危機的影響</h3>
+        <p>面對強敵，佛羅倫斯的知識分子必須為自己的生存尋找理由。他們開始強調佛羅倫斯是<strong>「自由的捍衛者」</strong>，對抗米蘭的「暴政」。這激發了強烈的愛國情操與共和意識。</p>
+    </section>
+
+    <section class="card">
+        <h2>3. 關鍵人物</h2>
+        <p>這些「公民人文主義者」通常身兼二職：既是滿腹經綸的學者，也是政府的高級官員。</p>
+
+        <h3>李奧納多·布魯尼 (Leonardo Bruni, 1370-1444)</h3>
+        <p>他是公民人文主義的代表人物，曾任佛羅倫斯共和國的總理（Chancellor）。</p>
+        <button class="toggle-btn" onclick="toggleContent('content2')">看看他的貢獻</button>
+        <div id="content2" class="hidden-content">
+            <ul>
+                <li><strong>翻譯亞里斯多德</strong>：他將亞里斯多德的《政治學》重新翻譯成拉丁文，強調人是「政治的動物」。</li>
+                <li><strong>《佛羅倫斯人民史》</strong>：他撰寫歷史書，將佛羅倫斯的自由精神追溯到古羅馬共和時期，認為羅馬帝國的皇帝反而扼殺了自由。</li>
+                <li><strong>讚頌詞 (Laudatio)</strong>：他大力讚揚佛羅倫斯的政治制度，認為它是正義與自由的化身。</li>
+            </ul>
+        </div>
+    </section>
+
+    <section class="card quiz-section">
+        <h2>4. 隨堂小測驗</h2>
+        <p>測試一下你對公民人文主義的理解吧！</p>
+
+        <div class="quiz-item">
+            <h3>Q1. 公民人文主義者最推崇哪一種生活方式？</h3>
+            <div class="options">
+                <label><input type="radio" name="q1" value="wrong" onclick="checkAnswer('q1', false, 'feedback1')"> 隱居山林，專注於宗教冥想。</label>
+                <label><input type="radio" name="q1" value="correct" onclick="checkAnswer('q1', true, 'feedback1')"> 積極參與公共事務與政治活動 (Vita Activa)。</label>
+                <label><input type="radio" name="q1" value="wrong" onclick="checkAnswer('q1', false, 'feedback1')"> 追求個人的財富累積，不問世事。</label>
+            </div>
+            <div id="feedback1" class="feedback"></div>
+        </div>
+
+        <div class="quiz-item">
+            <h3>Q2. 根據「巴倫假說」，是什麼歷史事件激發了佛羅倫斯的公民人文主義？</h3>
+            <div class="options">
+                <label><input type="radio" name="q2" value="wrong" onclick="checkAnswer('q2', false, 'feedback2')"> 黑死病的爆發。</label>
+                <label><input type="radio" name="q2" value="wrong" onclick="checkAnswer('q2', false, 'feedback2')"> 發現新大陸。</label>
+                <label><input type="radio" name="q2" value="correct" onclick="checkAnswer('q2', true, 'feedback2')"> 米蘭公國對佛羅倫斯的軍事威脅。</label>
+            </div>
+            <div id="feedback2" class="feedback"></div>
+        </div>
+    </section>
+
+    <section class="card">
+        <h2>5. 總結與反思</h2>
+        <p>公民人文主義留給現代社會最重要的遺產是：<strong>教育不僅僅是為了個人的知識增長，更是為了培養能夠服務社會的優秀公民。</strong></p>
+        <p>想一想：在現代民主社會中，我們是否也需要具備某種「公民美德」？</p>
+    </section>
+
+</div>
+
+<footer>
+    <p>資料來源：Stanford Encyclopedia of Philosophy (Civic Humanism) | 整理製作：AI 助教</p>
+</footer>
+
+<script>
+    // 顯示/隱藏內容的功能
+    function toggleContent(id) {
+        var content = document.getElementById(id);
+        if (content.style.display === "block") {
+            content.style.display = "none";
+        } else {
+            content.style.display = "block";
+        }
+    }
+
+    // 檢查答案的功能
+    function checkAnswer(question, isCorrect, feedbackId) {
+        var feedback = document.getElementById(feedbackId);
+        feedback.style.display = "block";
+        
+        if (isCorrect) {
+            feedback.innerHTML = "✅ 答對了！這正是公民人文主義的核心精神。";
+            feedback.className = "feedback correct";
+        } else {
+            feedback.innerHTML = "❌ 再想一下喔！請回顧上面的內容。";
+            feedback.className = "feedback incorrect";
+        }
+    }
+</script>
+
+</body>
+</html>
